@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.marketing_platform.RsCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.demo.entity.RsCategory">
+    <id column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="site_id" jdbcType="INTEGER" property="siteId" />
+    <result column="url_cat_id" jdbcType="INTEGER" property="urlCatId" />
+    <result column="goods_type_id" jdbcType="INTEGER" property="goodsTypeId" />
+    <result column="cat_url_name" jdbcType="VARCHAR" property="catUrlName" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="min" jdbcType="DECIMAL" property="min" />
+    <result column="max" jdbcType="DECIMAL" property="max" />
+    <result column="meta_title" jdbcType="VARCHAR" property="metaTitle" />
+    <result column="meta_keywords" jdbcType="VARCHAR" property="metaKeywords" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="image_app" jdbcType="VARCHAR" property="imageApp" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="sort_order" jdbcType="BIT" property="sortOrder" />
+    <result column="is_leaf" jdbcType="BIT" property="isLeaf" />
+    <result column="show_in_nav" jdbcType="BIT" property="showInNav" />
+    <result column="is_return" jdbcType="BIT" property="isReturn" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.demo.entity.RsCategoryWithBLOBs">
+    <result column="meta_description" jdbcType="LONGVARCHAR" property="metaDescription" />
+    <result column="cat_desc" jdbcType="LONGVARCHAR" property="catDesc" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cat_id, site_id, url_cat_id, goods_type_id, cat_url_name, cat_name, min, max, meta_title, 
+    meta_keywords, image, image_app, parent_id, sort_order, is_leaf, show_in_nav, is_return
+  </sql>
+  <sql id="Blob_Column_List">
+    meta_description, cat_desc
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.demo.entity.RsCategoryExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rs_category
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.demo.entity.RsCategoryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from rs_category
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rs_category
+    where cat_id = #{catId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rs_category
+    where cat_id = #{catId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.demo.entity.RsCategoryExample">
+    delete from rs_category
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.demo.entity.RsCategoryWithBLOBs">
+    insert into rs_category (cat_id, site_id, url_cat_id, 
+      goods_type_id, cat_url_name, cat_name, 
+      min, max, meta_title, 
+      meta_keywords, image, image_app, 
+      parent_id, sort_order, is_leaf, 
+      show_in_nav, is_return, meta_description, 
+      cat_desc)
+    values (#{catId,jdbcType=INTEGER}, #{siteId,jdbcType=INTEGER}, #{urlCatId,jdbcType=INTEGER}, 
+      #{goodsTypeId,jdbcType=INTEGER}, #{catUrlName,jdbcType=VARCHAR}, #{catName,jdbcType=VARCHAR}, 
+      #{min,jdbcType=DECIMAL}, #{max,jdbcType=DECIMAL}, #{metaTitle,jdbcType=VARCHAR}, 
+      #{metaKeywords,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{imageApp,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=INTEGER}, #{sortOrder,jdbcType=BIT}, #{isLeaf,jdbcType=BIT}, 
+      #{showInNav,jdbcType=BIT}, #{isReturn,jdbcType=BIT}, #{metaDescription,jdbcType=LONGVARCHAR}, 
+      #{catDesc,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.demo.entity.RsCategoryWithBLOBs">
+    insert into rs_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="siteId != null">
+        site_id,
+      </if>
+      <if test="urlCatId != null">
+        url_cat_id,
+      </if>
+      <if test="goodsTypeId != null">
+        goods_type_id,
+      </if>
+      <if test="catUrlName != null">
+        cat_url_name,
+      </if>
+      <if test="catName != null">
+        cat_name,
+      </if>
+      <if test="min != null">
+        min,
+      </if>
+      <if test="max != null">
+        max,
+      </if>
+      <if test="metaTitle != null">
+        meta_title,
+      </if>
+      <if test="metaKeywords != null">
+        meta_keywords,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="imageApp != null">
+        image_app,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="sortOrder != null">
+        sort_order,
+      </if>
+      <if test="isLeaf != null">
+        is_leaf,
+      </if>
+      <if test="showInNav != null">
+        show_in_nav,
+      </if>
+      <if test="isReturn != null">
+        is_return,
+      </if>
+      <if test="metaDescription != null">
+        meta_description,
+      </if>
+      <if test="catDesc != null">
+        cat_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="siteId != null">
+        #{siteId,jdbcType=INTEGER},
+      </if>
+      <if test="urlCatId != null">
+        #{urlCatId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsTypeId != null">
+        #{goodsTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="catUrlName != null">
+        #{catUrlName,jdbcType=VARCHAR},
+      </if>
+      <if test="catName != null">
+        #{catName,jdbcType=VARCHAR},
+      </if>
+      <if test="min != null">
+        #{min,jdbcType=DECIMAL},
+      </if>
+      <if test="max != null">
+        #{max,jdbcType=DECIMAL},
+      </if>
+      <if test="metaTitle != null">
+        #{metaTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="metaKeywords != null">
+        #{metaKeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="imageApp != null">
+        #{imageApp,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="sortOrder != null">
+        #{sortOrder,jdbcType=BIT},
+      </if>
+      <if test="isLeaf != null">
+        #{isLeaf,jdbcType=BIT},
+      </if>
+      <if test="showInNav != null">
+        #{showInNav,jdbcType=BIT},
+      </if>
+      <if test="isReturn != null">
+        #{isReturn,jdbcType=BIT},
+      </if>
+      <if test="metaDescription != null">
+        #{metaDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="catDesc != null">
+        #{catDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.demo.entity.RsCategoryExample" resultType="java.lang.Long">
+    select count(*) from rs_category
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update rs_category
+    <set>
+      <if test="record.catId != null">
+        cat_id = #{record.catId,jdbcType=INTEGER},
+      </if>
+      <if test="record.siteId != null">
+        site_id = #{record.siteId,jdbcType=INTEGER},
+      </if>
+      <if test="record.urlCatId != null">
+        url_cat_id = #{record.urlCatId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsTypeId != null">
+        goods_type_id = #{record.goodsTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.catUrlName != null">
+        cat_url_name = #{record.catUrlName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.catName != null">
+        cat_name = #{record.catName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.min != null">
+        min = #{record.min,jdbcType=DECIMAL},
+      </if>
+      <if test="record.max != null">
+        max = #{record.max,jdbcType=DECIMAL},
+      </if>
+      <if test="record.metaTitle != null">
+        meta_title = #{record.metaTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.metaKeywords != null">
+        meta_keywords = #{record.metaKeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null">
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageApp != null">
+        image_app = #{record.imageApp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sortOrder != null">
+        sort_order = #{record.sortOrder,jdbcType=BIT},
+      </if>
+      <if test="record.isLeaf != null">
+        is_leaf = #{record.isLeaf,jdbcType=BIT},
+      </if>
+      <if test="record.showInNav != null">
+        show_in_nav = #{record.showInNav,jdbcType=BIT},
+      </if>
+      <if test="record.isReturn != null">
+        is_return = #{record.isReturn,jdbcType=BIT},
+      </if>
+      <if test="record.metaDescription != null">
+        meta_description = #{record.metaDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.catDesc != null">
+        cat_desc = #{record.catDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update rs_category
+    set cat_id = #{record.catId,jdbcType=INTEGER},
+      site_id = #{record.siteId,jdbcType=INTEGER},
+      url_cat_id = #{record.urlCatId,jdbcType=INTEGER},
+      goods_type_id = #{record.goodsTypeId,jdbcType=INTEGER},
+      cat_url_name = #{record.catUrlName,jdbcType=VARCHAR},
+      cat_name = #{record.catName,jdbcType=VARCHAR},
+      min = #{record.min,jdbcType=DECIMAL},
+      max = #{record.max,jdbcType=DECIMAL},
+      meta_title = #{record.metaTitle,jdbcType=VARCHAR},
+      meta_keywords = #{record.metaKeywords,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      image_app = #{record.imageApp,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      sort_order = #{record.sortOrder,jdbcType=BIT},
+      is_leaf = #{record.isLeaf,jdbcType=BIT},
+      show_in_nav = #{record.showInNav,jdbcType=BIT},
+      is_return = #{record.isReturn,jdbcType=BIT},
+      meta_description = #{record.metaDescription,jdbcType=LONGVARCHAR},
+      cat_desc = #{record.catDesc,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update rs_category
+    set cat_id = #{record.catId,jdbcType=INTEGER},
+      site_id = #{record.siteId,jdbcType=INTEGER},
+      url_cat_id = #{record.urlCatId,jdbcType=INTEGER},
+      goods_type_id = #{record.goodsTypeId,jdbcType=INTEGER},
+      cat_url_name = #{record.catUrlName,jdbcType=VARCHAR},
+      cat_name = #{record.catName,jdbcType=VARCHAR},
+      min = #{record.min,jdbcType=DECIMAL},
+      max = #{record.max,jdbcType=DECIMAL},
+      meta_title = #{record.metaTitle,jdbcType=VARCHAR},
+      meta_keywords = #{record.metaKeywords,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      image_app = #{record.imageApp,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=INTEGER},
+      sort_order = #{record.sortOrder,jdbcType=BIT},
+      is_leaf = #{record.isLeaf,jdbcType=BIT},
+      show_in_nav = #{record.showInNav,jdbcType=BIT},
+      is_return = #{record.isReturn,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.entity.RsCategoryWithBLOBs">
+    update rs_category
+    <set>
+      <if test="siteId != null">
+        site_id = #{siteId,jdbcType=INTEGER},
+      </if>
+      <if test="urlCatId != null">
+        url_cat_id = #{urlCatId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsTypeId != null">
+        goods_type_id = #{goodsTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="catUrlName != null">
+        cat_url_name = #{catUrlName,jdbcType=VARCHAR},
+      </if>
+      <if test="catName != null">
+        cat_name = #{catName,jdbcType=VARCHAR},
+      </if>
+      <if test="min != null">
+        min = #{min,jdbcType=DECIMAL},
+      </if>
+      <if test="max != null">
+        max = #{max,jdbcType=DECIMAL},
+      </if>
+      <if test="metaTitle != null">
+        meta_title = #{metaTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="metaKeywords != null">
+        meta_keywords = #{metaKeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="imageApp != null">
+        image_app = #{imageApp,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="sortOrder != null">
+        sort_order = #{sortOrder,jdbcType=BIT},
+      </if>
+      <if test="isLeaf != null">
+        is_leaf = #{isLeaf,jdbcType=BIT},
+      </if>
+      <if test="showInNav != null">
+        show_in_nav = #{showInNav,jdbcType=BIT},
+      </if>
+      <if test="isReturn != null">
+        is_return = #{isReturn,jdbcType=BIT},
+      </if>
+      <if test="metaDescription != null">
+        meta_description = #{metaDescription,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="catDesc != null">
+        cat_desc = #{catDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where cat_id = #{catId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.demo.entity.RsCategoryWithBLOBs">
+    update rs_category
+    set site_id = #{siteId,jdbcType=INTEGER},
+      url_cat_id = #{urlCatId,jdbcType=INTEGER},
+      goods_type_id = #{goodsTypeId,jdbcType=INTEGER},
+      cat_url_name = #{catUrlName,jdbcType=VARCHAR},
+      cat_name = #{catName,jdbcType=VARCHAR},
+      min = #{min,jdbcType=DECIMAL},
+      max = #{max,jdbcType=DECIMAL},
+      meta_title = #{metaTitle,jdbcType=VARCHAR},
+      meta_keywords = #{metaKeywords,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      image_app = #{imageApp,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      sort_order = #{sortOrder,jdbcType=BIT},
+      is_leaf = #{isLeaf,jdbcType=BIT},
+      show_in_nav = #{showInNav,jdbcType=BIT},
+      is_return = #{isReturn,jdbcType=BIT},
+      meta_description = #{metaDescription,jdbcType=LONGVARCHAR},
+      cat_desc = #{catDesc,jdbcType=LONGVARCHAR}
+    where cat_id = #{catId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.demo.entity.RsCategory">
+    update rs_category
+    set site_id = #{siteId,jdbcType=INTEGER},
+      url_cat_id = #{urlCatId,jdbcType=INTEGER},
+      goods_type_id = #{goodsTypeId,jdbcType=INTEGER},
+      cat_url_name = #{catUrlName,jdbcType=VARCHAR},
+      cat_name = #{catName,jdbcType=VARCHAR},
+      min = #{min,jdbcType=DECIMAL},
+      max = #{max,jdbcType=DECIMAL},
+      meta_title = #{metaTitle,jdbcType=VARCHAR},
+      meta_keywords = #{metaKeywords,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      image_app = #{imageApp,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      sort_order = #{sortOrder,jdbcType=BIT},
+      is_leaf = #{isLeaf,jdbcType=BIT},
+      show_in_nav = #{showInNav,jdbcType=BIT},
+      is_return = #{isReturn,jdbcType=BIT}
+    where cat_id = #{catId,jdbcType=INTEGER}
+  </update>
+</mapper>

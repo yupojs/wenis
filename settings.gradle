@@ -1,0 +1,4 @@
+rootProject.name = 'wenis'
+include 'generator-api'
+include 'generator-service'
+
