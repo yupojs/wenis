@@ -45,6 +45,24 @@ public class Generator {
     /** The projects. */
     private Set<String> projects;
 
+    public Generator(ShellCallback shellCallback, List<String> warnings) {
+        super();
+        if (shellCallback == null) {
+            this.shellCallback = new DefaultShellCallback(false);
+        } else {
+            this.shellCallback = shellCallback;
+        }
+
+        if (warnings == null) {
+            this.warnings = new ArrayList<String>();
+        } else {
+            this.warnings = warnings;
+        }
+        generatedJavaFiles = new ArrayList<GeneratedJavaFile>();
+        generatedXmlFiles = new ArrayList<GeneratedXmlFile>();
+        projects = new HashSet<String>();
+    }
+
     public Generator(Configuration configuration, ShellCallback shellCallback,
                      List<String> warnings) throws InvalidConfigurationException {
         super();
@@ -81,14 +99,7 @@ public class Generator {
                          Set<String> fullyQualifiedTableNames, boolean writeFiles) throws SQLException,
             IOException, InterruptedException {
 
-        if (callback == null) {
-            callback = new NullProgressCallback();
-        }
 
-        generatedJavaFiles.clear();
-        generatedXmlFiles.clear();
-        ObjectFactory.reset();
-        RootClassInfo.reset();
 
         // calculate the contexts to run
         List<Context> contextsToRun;
@@ -108,6 +119,22 @@ public class Generator {
 //            ClassLoader classLoader = getCustomClassloader(configuration.getClassPathEntries());
 //            ObjectFactory.addExternalClassLoader(classLoader);
 //        }
+        generator(callback, fullyQualifiedTableNames, writeFiles, contextsToRun);
+
+
+        callback.done();
+    }
+
+    public void generator(ProgressCallback callback, Set<String> fullyQualifiedTableNames, boolean writeFiles, List<Context> contextsToRun)
+            throws SQLException, InterruptedException, IOException {
+        if (callback == null) {
+            callback = new NullProgressCallback();
+        }
+
+        generatedJavaFiles.clear();
+        generatedXmlFiles.clear();
+        ObjectFactory.reset();
+        RootClassInfo.reset();
 
         // now run the introspections...
         int totalSteps = 0;
@@ -152,8 +179,6 @@ public class Generator {
                 shellCallback.refreshProject(project);
             }
         }
-
-        callback.done();
     }
 
     private void writeGeneratedJavaFile(GeneratedJavaFile gjf, ProgressCallback callback)

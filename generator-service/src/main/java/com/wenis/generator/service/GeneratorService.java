@@ -6,4 +6,6 @@ import java.io.IOException;
 
 public interface GeneratorService {
     String saveConfig(ContextGenerator contextGenerator) throws IOException;
+
+    String generator();
 }

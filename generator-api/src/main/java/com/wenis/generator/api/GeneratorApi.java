@@ -12,4 +12,7 @@ public interface GeneratorApi {
 
     @RequestMapping(value = "/generator/save_config", method = RequestMethod.POST)
     @ResponseBody String saveConfig(@RequestBody ContextGenerator contextGenerator) throws IOException;
+
+    @RequestMapping(value = "/generator/do_generator", method = RequestMethod.POST)
+    @ResponseBody String generator();
 }

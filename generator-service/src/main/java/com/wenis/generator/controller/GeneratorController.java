@@ -17,4 +17,10 @@ public class GeneratorController implements GeneratorApi {
     public String saveConfig(ContextGenerator contextGenerator) throws IOException {
         return generatorService.saveConfig(contextGenerator);
     }
+
+    @Override
+    public String generator() {
+        return generatorService.generator();
+    }
+
 }
